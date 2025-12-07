@@ -1,5 +1,4 @@
-import * as fs from 'fs';
-import * as readline from 'readline';
+import { createReadlineInterfaceFromFile, getPartArgument } from '../utils/utils.ts';
 
 type Direction = 'R' | 'L'
 type MoveProps = {
@@ -7,16 +6,10 @@ type MoveProps = {
   steps: number
 }
 
-const args = process.argv.slice(2);
-const partArg = parseInt(args[0]?.split('--part=')[1])
-const part = partArg === 1 || partArg === 2 ? partArg : 1
+const part = getPartArgument()
 
 const main = async () => {
-  const fileStream = fs.createReadStream('input.txt');
-  const rl = readline.createInterface({
-    input: fileStream,
-    crlfDelay: Infinity
-  })
+  const rl = createReadlineInterfaceFromFile('input.txt')
 
   let dial = 50
   let zeros = 0
