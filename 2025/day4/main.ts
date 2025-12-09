@@ -70,19 +70,37 @@ const main = async () => {
 
   let accessibleRoles = 0
 
-  for (let row = 0; row < numberOfRows; row++) {
-    for (let col = 0; col < numberOfColumns; col++) {
-      const char = matrix[row][col]
+  const scanMatrix = () => {
+    let accessibleRolesInThisRound = 0
 
-      if (char == '@') {
-        const numberOfRolesAround = checkSurroundings(matrix, row, col)
+    for (let row = 0; row < numberOfRows; row++) {
+      for (let col = 0; col < numberOfColumns; col++) {
+        const char = matrix[row][col]
 
-        if (numberOfRolesAround < 4) {
-          accessibleRoles++
+        if (char == '@') {
+          const numberOfRolesAround = checkSurroundings(matrix, row, col)
+
+          if (numberOfRolesAround < 4) {
+            accessibleRolesInThisRound++
+
+            if (part === 2) {
+              matrix[row][col] = '.'
+            }
+          }
         }
       }
     }
+
+    if (accessibleRolesInThisRound > 0) {
+      accessibleRoles += accessibleRolesInThisRound
+
+      if (part === 2) {
+        scanMatrix()
+      }
+    }
   }
+
+  scanMatrix()
 
   console.log('accessibleRoles', accessibleRoles)
 }
